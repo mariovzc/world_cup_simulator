@@ -2,18 +2,18 @@
 #
 # Table name: matches
 #
-#  id            :integer          not null, primary key
-#  name          :integer
-#  match_type_id :integer
-#  home_team_id  :integer
-#  away_team_id  :integer
-#  date          :datetime
-#  home_result   :integer
-#  away_result   :integer
-#  stadium_id    :integer
-#  finished      :boolean
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id               :integer          not null, primary key
+#  name             :integer
+#  home_team_id     :integer
+#  away_team_id     :integer
+#  date             :datetime
+#  home_result      :integer
+#  away_result      :integer
+#  stadium_id       :integer
+#  finished         :boolean
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  game_sub_type_id :integer
 #
 
 require 'rails_helper'
