@@ -1,14 +1,15 @@
 # == Schema Information
 #
-# Table name: teams
+# Table name: group_teams
 #
 #  id         :integer          not null, primary key
-#  name       :string
+#  group_id   :integer
+#  team_id    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
-class Team < ApplicationRecord
-  validates :name, presence: true
-  has_one :group_team
+class GroupTeam < ApplicationRecord
+  belongs_to :group
+  belongs_to :team
 end

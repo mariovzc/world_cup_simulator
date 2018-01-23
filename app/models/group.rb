@@ -9,5 +9,9 @@
 #
 
 class Group < ApplicationRecord
+  #validations
   validates :name, presence: true
+
+  #associations
+  has_many :group_team
 end
