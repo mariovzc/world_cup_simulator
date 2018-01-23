@@ -10,6 +10,8 @@
 #
 
 class GameSubType < ApplicationRecord
-  belongs_to :game_type
   validates :name, presence: true
+  
+  belongs_to :game_type
+  has_many :matches
 end
