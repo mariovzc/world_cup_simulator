@@ -18,7 +18,12 @@ class Api::V1::MatchController < ApplicationController
   end
   def round_16
     
-    @data = get_group_phase_teams
+    if (Match.count == 48)
+      create_round_16_phase_matches
+    end
+
+    @data = GameType.last.game_sub_types.find(9).matches
+    asd
   end
 
   private
@@ -50,6 +55,28 @@ class Api::V1::MatchController < ApplicationController
       end
     end
   end
+  def create_round_16_phase_matches    
+    file = JSON.parse(File.read('db/data.json'))
+    file = file['knockout']['round_16']['matches']
+    game_sub_type = GameSubType.where(name: "Round of 16")[0]
+    file.each do |match|
+      home_team,away_team = get_teams_to_group(match["home_team"], match["away_team"])
+      home_result, away_result = get_score, get_score
+
+      winner = home_result > away_result ? 1 : away_result > home_result ? 2 : 0
+      Match.create(
+        name: match["name"], 
+        home_team: home_team,
+        away_team: away_team,
+        date: Time.parse(match['date']),
+        stadium_id: match['stadium'].to_i,
+        home_result: home_result,
+        game_sub_type: game_sub_type,
+        away_result: away_result,
+        winner: winner
+      )
+    end
+  end
   def get_score
     rand(0..5)
   end
@@ -66,9 +93,8 @@ class Api::V1::MatchController < ApplicationController
     ]
     arr.find {|x| x[:group] == group}[:ids]
   end
-  def get_team_name(id)
+  def get_team(id)
     team =Team.find(id)
-    team.name
   end
   def get_group_phase_teams
     teams = []
@@ -92,5 +118,41 @@ class Api::V1::MatchController < ApplicationController
       teams << {group: sub.name, teams: team_group.reverse }
     end
     teams
+  end
+  def group_phase_winners
+    teams = []
+    GameType.first.game_sub_types.each do |sub|
+      team_group = []
+      teams_ids = get_ids_of_teams(sub.name)
+      teams_ids.each do |id|
+        team_matches_home = sub.matches.where(home_team_id: id)
+        team_matches_away = sub.matches.where(away_team_id: id)
+        points = 0
+        team_matches_home.each do |match|
+          points += match.winner == 1 ? 3 : match.winner == 0 ? 1 : 0
+        end
+        team_matches_away.each do |match|
+          points += match.winner == 1 ? 0 : match.winner == 0 ? 1 : 3
+        end
+        team_group << {team: get_team(id), points: points}
+
+      end
+      team_group = team_group.sort_by! { |hsh| hsh[:points] }
+      team_group = team_group.reverse
+      teams << {group: sub.name, teams: team_group[0..-3] }
+    end
+    teams
+  end
+  def get_teams_to_group(_winner, _runner)
+    
+    _winner = _winner.split('_')[1].capitalize!
+    winner = group_phase_winners.find {|x| x[:group] == _winner}
+    winner = winner[:teams].first
+    
+    _runner = _runner.split('_')[1].capitalize!
+    runner = group_phase_winners.find {|x| x[:group] == _runner}
+    runner = runner[:teams].last
+
+    return  winner[:team], runner[:team]
   end
 end
