@@ -17,7 +17,8 @@ class Api::V1::MatchController < ApplicationController
     @data = GameType.first.game_sub_types
   end
   def round_16
-    @data = GameType.first.game_sub_types
+    
+    @data = get_group_phase_teams
   end
 
   private
@@ -51,5 +52,45 @@ class Api::V1::MatchController < ApplicationController
   end
   def get_score
     rand(0..5)
+  end
+  def get_ids_of_teams(group)
+    arr = [
+      { group: 'A', ids: (1..4).to_a },
+      { group: 'B', ids: (5..8).to_a },
+      { group: 'C', ids: (9..12).to_a },
+      { group: 'D', ids: (13..16).to_a },
+      { group: 'E', ids: (17..20).to_a },
+      { group: 'F', ids: (21..24).to_a },
+      { group: 'G', ids: (25..28).to_a },
+      { group: 'H', ids: (29..32).to_a }
+    ]
+    arr.find {|x| x[:group] == group}[:ids]
+  end
+  def get_team_name(id)
+    team =Team.find(id)
+    team.name
+  end
+  def get_group_phase_teams
+    teams = []
+    GameType.first.game_sub_types.each do |sub|
+      team_group = []
+      teams_ids = get_ids_of_teams(sub.name)
+      teams_ids.each do |id|
+        team_matches_home = sub.matches.where(home_team_id: id)
+        team_matches_away = sub.matches.where(away_team_id: id)
+        points = 0
+        team_matches_home.each do |match|
+          points += match.winner == 1 ? 3 : match.winner == 0 ? 1 : 0
+        end
+        team_matches_away.each do |match|
+          points += match.winner == 1 ? 0 : match.winner == 0 ? 1 : 3
+        end
+        team_group << {team: get_team_name(id), points: points}
+
+      end
+      team_group = team_group.sort_by! { |hsh| hsh[:points] }
+      teams << {group: sub.name, teams: team_group.reverse }
+    end
+    teams
   end
 end
