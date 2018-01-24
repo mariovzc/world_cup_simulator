@@ -17,7 +17,7 @@ class Api::V1::MatchController < ApplicationController
     @data = GameType.first.game_sub_types
   end
   def round_16
-    @data = {name: 'hola'}
+    @data = GameType.first.game_sub_types
   end
 
   private
