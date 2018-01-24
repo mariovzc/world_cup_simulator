@@ -14,7 +14,9 @@
 
 class Api::V1::MatchController < ApplicationController
   def get_groups   
-    create_group_phase_matches
+    if(Match.count == 0)
+      create_group_phase_matches
+    end
     @data = GameType.first.game_sub_types
   end
   def round_16
@@ -30,10 +32,6 @@ class Api::V1::MatchController < ApplicationController
   def create_group_phase_matches
     file = JSON.parse(File.read('db/data.json'))
     file = file['groups']
-    ##This is if the call is for new teams
-    if (Match.count >= 48)
-      Match.delete_all
-    end
     file.each do |key, array|
       array['matches'].to_a.each do |match|
         game_sub_type = GameSubType.where(name: key.capitalize)[0]
