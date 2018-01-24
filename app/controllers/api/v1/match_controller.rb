@@ -10,6 +10,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  game_sub_type_id :integer
+#  Winner 1 local , 2 away , 0 draw !MUST BE IN THE MATCH!
 
 class Api::V1::MatchController < ApplicationController
   def get_groups   
@@ -38,7 +39,6 @@ class Api::V1::MatchController < ApplicationController
         game_sub_type = GameSubType.where(name: key.capitalize)[0]
         home_result = get_score
         away_result = get_score
-        #Winner info: 1 local , 2 away , 0 draw
         winner = home_result > away_result ? 1 : away_result > home_result ? 2 : 0
       Match.create(
           name: match['name'].to_i, 
