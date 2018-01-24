@@ -14,6 +14,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  game_sub_type_id :integer
+#  winner           :integer
 #
 
 class Match < ApplicationRecord
