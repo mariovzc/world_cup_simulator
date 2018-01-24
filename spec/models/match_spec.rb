@@ -14,6 +14,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  game_sub_type_id :integer
+#  winner           :integer
 #
 
 require 'rails_helper'
@@ -25,7 +26,6 @@ RSpec.describe Match, type: :model do
   describe "Associations" do
     it { should belong_to(:home_team) }
     it { should belong_to(:away_team) }
-    it { should belong_to(:match_type) }
     it { should belong_to(:stadium) }
   end
 end
