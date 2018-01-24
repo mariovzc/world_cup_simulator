@@ -16,6 +16,9 @@ class Api::V1::MatchController < ApplicationController
     create_group_phase_matches
     @data = GameType.first.game_sub_types
   end
+  def round_16
+    @data = {name: 'hola'}
+  end
 
   private
   def create_group_phase_matches
