@@ -1,1 +1,1 @@
-json.data @data
+json. (@data[0], :name, :home_team, :home_result, :away_team, :away_result, :date, :stadium, :game_sub_type, :winner)
