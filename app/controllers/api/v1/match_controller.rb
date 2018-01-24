@@ -23,7 +23,6 @@ class Api::V1::MatchController < ApplicationController
     end
 
     @data = GameType.last.game_sub_types.find(9).matches
-    asd
   end
 
   private
