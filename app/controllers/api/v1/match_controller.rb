@@ -28,6 +28,12 @@ class Api::V1::MatchController < ApplicationController
     @data = GameType.last.game_sub_types.find(9).matches
   end
 
+  def round_8
+    if(Match.count == 56)
+      create_round_8_phase_matches
+    end
+    @data = GameType.last.game_sub_types.find(10).matches
+  end
   private
   def create_group_phase_matches
     file = JSON.parse(File.read('db/data.json'))
@@ -52,7 +58,7 @@ class Api::V1::MatchController < ApplicationController
       end
     end
   end
-  def create_round_16_phase_matches    
+  def create_round_16_phase_matches
     file = JSON.parse(File.read('db/data.json'))
     file = file['knockout']['round_16']['matches']
     game_sub_type = GameSubType.where(name: "Round of 16")[0]
@@ -70,6 +76,30 @@ class Api::V1::MatchController < ApplicationController
         home_result: home_result,
         game_sub_type: game_sub_type,
         away_result: away_result,
+        winner: winner
+      )
+    end
+  end
+  def create_round_8_phase_matches
+    file = JSON.parse(File.read('db/data.json'))
+    file = file['knockout']['round_8']['matches']
+    teams = []
+    file.each do |match|
+      game_sub_type = GameType.last.game_sub_types.find(10)
+      home_team = get_winner_from_match(match["home_team"])
+      away_team = get_winner_from_match(match["away_team"])
+      home_team_score = get_score
+      away_team_score = get_score
+      winner =  home_team_score > away_team_score ? 1 : 2
+      Match.create(
+        name: match['name'].to_i, 
+        home_team_id: home_team.id, 
+        away_team_id: away_team.id,
+        home_result: home_team_score,
+        away_result: away_team_score,
+        date: Time.parse(match['date']),
+        stadium_id: match['stadium'].to_i,
+        game_sub_type: game_sub_type,
         winner: winner
       )
     end
@@ -151,5 +181,10 @@ class Api::V1::MatchController < ApplicationController
     runner = runner[:teams].last
 
     return  winner[:team], runner[:team]
+  end
+
+  def get_winner_from_match(match)
+    _match = Match.where(name: match)[0]    
+    return _match.winner === 1 ? _match.home_team : _match.away_team
   end
 end
