@@ -34,6 +34,15 @@ class Api::V1::MatchController < ApplicationController
     end
     @data = GameType.last.game_sub_types.find(10).matches
   end
+  def round_4
+    if(Match.count == 60)
+      create_round_4_phase_matches
+    end
+    @data = GameType.last.game_sub_types.find(11).matches
+  end
+  def round_2_losers
+    
+  end
   private
   def create_group_phase_matches
     file = JSON.parse(File.read('db/data.json'))
@@ -86,6 +95,29 @@ class Api::V1::MatchController < ApplicationController
     teams = []
     file.each do |match|
       game_sub_type = GameType.last.game_sub_types.find(10)
+      home_team = get_winner_from_match(match["home_team"])
+      away_team = get_winner_from_match(match["away_team"])
+      home_team_score = get_score
+      away_team_score = get_score
+      winner =  home_team_score > away_team_score ? 1 : 2
+      Match.create(
+        name: match['name'].to_i, 
+        home_team_id: home_team.id, 
+        away_team_id: away_team.id,
+        home_result: home_team_score,
+        away_result: away_team_score,
+        date: Time.parse(match['date']),
+        stadium_id: match['stadium'].to_i,
+        game_sub_type: game_sub_type,
+        winner: winner
+      )
+    end
+  end
+  def create_round_4_phase_matches
+    file = JSON.parse(File.read('db/data.json'))
+    file = file['knockout']['round_4']['matches']
+    file.each do |match|
+      game_sub_type = GameType.last.game_sub_types.find(11)
       home_team = get_winner_from_match(match["home_team"])
       away_team = get_winner_from_match(match["away_team"])
       home_team_score = get_score
