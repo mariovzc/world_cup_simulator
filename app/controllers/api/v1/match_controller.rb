@@ -41,7 +41,10 @@ class Api::V1::MatchController < ApplicationController
     @data = GameType.last.game_sub_types.find(11).matches
   end
   def round_2_losers
-    
+    if(Match.count == 62)
+      create_third_place_match
+    end
+    @data = GameType.last.game_sub_types.find(12).matches
   end
   private
   def create_group_phase_matches
@@ -120,6 +123,30 @@ class Api::V1::MatchController < ApplicationController
       game_sub_type = GameType.last.game_sub_types.find(11)
       home_team = get_winner_from_match(match["home_team"])
       away_team = get_winner_from_match(match["away_team"])
+      home_team_score = get_score
+      away_team_score = get_score
+      winner =  home_team_score > away_team_score ? 1 : 2
+      Match.create(
+        name: match['name'].to_i, 
+        home_team_id: home_team.id, 
+        away_team_id: away_team.id,
+        home_result: home_team_score,
+        away_result: away_team_score,
+        date: Time.parse(match['date']),
+        stadium_id: match['stadium'].to_i,
+        game_sub_type: game_sub_type,
+        winner: winner
+      )
+    end
+  end
+  def create_third_place_match
+    file = JSON.parse(File.read('db/data.json'))
+    file = file['knockout']['round_2_loser']['matches']
+    game_sub_type = GameType.last.game_sub_types.find(12)
+
+    file.each do |match|
+      home_team = get_loser_from_match(match["home_team"])
+      away_team = get_loser_from_match(match["away_team"])
       home_team_score = get_score
       away_team_score = get_score
       winner =  home_team_score > away_team_score ? 1 : 2
@@ -218,5 +245,9 @@ class Api::V1::MatchController < ApplicationController
   def get_winner_from_match(match)
     _match = Match.where(name: match)[0]    
     return _match.winner === 1 ? _match.home_team : _match.away_team
+  end
+  def get_loser_from_match(match)
+    _match = Match.where(name: match)[0]
+    return _match.winner === 1 ? _match.away_team : _match.home_team
   end
 end
