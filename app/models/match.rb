@@ -21,7 +21,6 @@ class Match < ApplicationRecord
 
   validates :date, presence: true
 
-  belongs_to :match_type
   belongs_to :stadium
   belongs_to :game_sub_type
   belongs_to :home_team, class_name: "Team", foreign_key: 'home_team_id'

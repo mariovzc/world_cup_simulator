@@ -25,7 +25,6 @@ RSpec.describe Match, type: :model do
   describe "Associations" do
     it { should belong_to(:home_team) }
     it { should belong_to(:away_team) }
-    it { should belong_to(:match_type) }
     it { should belong_to(:stadium) }
   end
 end
