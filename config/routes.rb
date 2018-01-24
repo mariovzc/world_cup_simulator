@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       get 'playround8', to: 'match#round_8'
       get 'playround4', to: 'match#round_4'
       get 'playthirdplace', to: 'match#round_2_losers'
+      get 'playfinal', to: 'match#round_final'
     end
   end
 
