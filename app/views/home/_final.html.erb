@@ -1,0 +1,24 @@
+<div class="row group-cnt">
+  <h2 class="text-center">Final - Winner: <%= @final.winner == 1 ? @final.home_team.name : @final.away_team.name  %></h2>
+  <div class="col-sm-offset-3 col-md-6 col-sm-6">
+    <div class="list-group">
+      <a href="javascript:void(0)" class="list-group-item text-center">
+        <h4 class="list-group-item-heading">
+          <%=@final.home_team.name%> <%=@final.home_result%>-<%= @final.away_result%> <%=@final.away_team.name%>
+        </h4>
+      </a>
+    </div>
+  </div>
+</div>
+<div class="row group-cnt">
+  <h2 class="text-center"><%= @third_place.game_sub_type.name %> - Winner: <%= @third_place.winner == 1 ? @third_place.home_team.name : @third_place.away_team.name  %> </h1>
+  <div class="col-sm-offset-3 col-md-6 col-sm-6">
+    <div class="list-group">
+      <a href="javascript:void(0)" class="list-group-item text-center">
+        <h4 class="list-group-item-heading">
+          <%=@third_place.home_team.name%> <%=@third_place.home_result%>-<%= @third_place.away_result%> <%=@third_place.away_team.name%>
+        </h4>
+      </a>
+    </div>
+  </div>
+</div>

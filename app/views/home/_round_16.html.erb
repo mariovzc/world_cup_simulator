@@ -1,0 +1,14 @@
+<div class="row group-cnt">
+  <%@round_16.each do |match|%>
+  <div class="col-md-3 col-sm-3">
+    <h2 class="text-center">Final - Winner: <%= match.winner == 1 ? match.home_team.name : match.away_team.name  %></h2>
+    <div class="list-group">
+      <a href="javascript:void(0)" class="list-group-item text-center">
+        <h4 class="list-group-item-heading">
+          <%=match.home_team.name%> <%=match.home_result%>-<%= match.away_result%> <%=match.away_team.name%>
+        </h4>
+      </a>
+    </div>
+  </div>
+  <% end %>
+</div>
