@@ -53,12 +53,14 @@ class Api::V1::MatchController < ApplicationController
     @data = GameType.last.game_sub_types.find(13).matches
   end
   def play_world_cup
-    create_group_phase_matches
-    create_round_16_phase_matches
-    create_round_8_phase_matches
-    create_round_4_phase_matches
-    create_third_place_match
-    create_final_match
+    if(Match.count == 0)
+      create_group_phase_matches
+      create_round_16_phase_matches
+      create_round_8_phase_matches
+      create_round_4_phase_matches
+      create_third_place_match
+      create_final_match
+    end
   end
   def restart_world_cup
     Match.delete_all
