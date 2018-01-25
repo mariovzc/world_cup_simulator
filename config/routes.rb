@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       get 'playthirdplace', to: 'match#round_2_losers'
       get 'playfinal', to: 'match#round_final'
       post 'create_matches', to: 'match#play_world_cup'
-      delete 'restart', to: 'match#restar_world_cup'
+      delete 'restart', to: 'match#restart_world_cup'
     end
   end
 

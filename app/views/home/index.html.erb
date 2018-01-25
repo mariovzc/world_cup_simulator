@@ -1,1 +1,39 @@
 <%= render 'home/nav'%>
+<div class="container-fluid">
+    <% if Match.count > 1%>
+      <ul class="nav nav-tabs" id="tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#groups" aria-controls="groups" role="tab" data-toggle="tab">Groups</a></li>
+        <li role="presentation"><a href="#round_16" aria-controls="round_16" role="tab" data-toggle="tab">Round of 16</a></li>
+        <li role="presentation"><a href="#round_8" aria-controls="round_8" role="tab" data-toggle="tab">Quarter-finals</a></li>
+        <li role="presentation"><a href="#round_4" aria-controls="round_4" role="tab" data-toggle="tab">Semi-finals</a></li>
+        <li role="presentation"><a href="#round_2" aria-controls="round_2" role="tab" data-toggle="tab">Final</a></li>
+      </ul>
+      <div class="tab-content">
+          <div role="tabpanel" class="tab-pane fade in active" id="groups">
+            <%= render 'groups'%>
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="round_16">
+            <%=render 'round_16'%>
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="round_8">
+            <%= render 'round_8'%>
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="round_4">
+            <%= render 'round_4'%>
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="round_2">
+            <%= render 'final' %>
+          </div>
+        </div>
+    <% else %>
+      <div class="row btn-container">
+        <div class="col-md-6 col-sm-offset-3">
+          <div class="text-center">
+            <h2>Wold Cup Simulator</h2>
+            <button class="btn btn-primary btn-lg" id="start" >Start!</a>    
+          </div>
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>
