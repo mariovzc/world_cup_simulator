@@ -2,6 +2,11 @@ class HomeController < ApplicationController
   def index
     @matches = Match.count
     @groups_phase = get_group_teams
+    @round_16 = GameType.last.game_sub_types.find(9).matches
+    @round_8 = GameType.last.game_sub_types.find(10).matches
+    @round_4 = GameType.last.game_sub_types.find(11).matches
+    @third_place = GameType.last.game_sub_types.find(12).matches[0]
+    @final = GameType.last.game_sub_types.find(13).matches[0]
   end
 
   private
