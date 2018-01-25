@@ -1,1 +1,24 @@
 <%= render 'home/nav'%>
+<div class="container-fluid">
+    <% if Match.count > 1%>
+      <ul class="nav nav-tabs" id="tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#groups" aria-controls="groups" role="tab" data-toggle="tab">Groups</a></li>
+        <li role="presentation"><a href="#round_16" aria-controls="round_16" role="tab" data-toggle="tab">Round of 16</a></li>
+        <li role="presentation"><a href="#round_8" aria-controls="round_8" role="tab" data-toggle="tab">Quarter-finals</a></li>
+        <li role="presentation"><a href="#round_4" aria-controls="round_4" role="tab" data-toggle="tab">Semi-finals</a></li>
+        <li role="presentation"><a href="#round_2_loser" aria-controls="round_2_loser" role="tab" data-toggle="tab">Third place play-off</a></li>
+        <li role="presentation"><a href="#round_2" aria-controls="round_2" role="tab" data-toggle="tab">Final</a></li>
+      </ul>
+      <div class="tab-content">
+          <div role="tabpanel" class="tab-pane fade in active" id="groups">
+            <%= render 'groups'%>
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="round_16">...</div>
+          <div role="tabpanel" class="tab-pane fade" id="round_8">8888</div>
+          <div role="tabpanel" class="tab-pane fade" id="round_4">semi</div>
+          <div role="tabpanel" class="tab-pane fade" id="round_2_loser">third</div>
+          <div role="tabpanel" class="tab-pane fade" id="round_2">final</div>
+        </div>      
+    <%end%>
+  </div>
+</div>
